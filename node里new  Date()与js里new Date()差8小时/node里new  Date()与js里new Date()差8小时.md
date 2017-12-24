@@ -1,9 +1,9 @@
 ## node里new  Date()与js里new Date()差8小时
 
-在node里```new date()```,取的是UTC时间
+在node里`new date()`,取的是UTC时间
 
-在js里```new date()```,
-根据[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date)，```new date()```如果没有输入任何参数，则Date的构造器会依据系统设置的当前时间来创建一个Date对象。
+在js里`new date()`,
+根据[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date)，`new date()`如果没有输入任何参数，则Date的构造器会依据系统设置的当前时间来创建一个Date对象。
 
 整个地球分为二十四时区，每个时区都有自己的本地时间。在国际无线电通信场合，为了统一起见，使用一个统一的时间，称为通用协调时(UTC, Universal Time Coordinated)
 
