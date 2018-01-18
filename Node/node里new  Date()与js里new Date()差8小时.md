@@ -1,4 +1,4 @@
-## node里new  Date()与js里new Date()差8小时
+## node.js里new Date()与js里new Date()差8小时
 
 在node里`new date()`,取的是UTC时间
 

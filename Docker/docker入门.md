@@ -1,4 +1,5 @@
 ## 概念
+
 Docker是什么？
 Docker是一个虚拟环境容器，可以将你的开发环境、代码、配置文件等一并打包到这个容器中，并发布和应用到任意平台中。比如，你在本地用Python开发网站后台，开发测试完成后，就可以将Python3及其依赖包、Flask及其各种插件、Mysql、Nginx等打包到一个容器中，然后部署到任意你想部署到的环境。
 
@@ -10,13 +11,20 @@ Docker是一个虚拟环境容器，可以将你的开发环境、代码、配�
 3.仓库（Repository）：类似于代码仓库，这里是镜像仓库，是Docker用来集中存放镜像文件的地方。注意与注册服务器（Registry）的区别：注册服务器是存放仓库的地方，一般会有多个仓库；而仓库是存放镜像的地方，一般每个仓库存放一类镜像，每个镜像利用tag进行区分，比如Ubuntu仓库存放有多个版本（12.04、14.04等）的Ubuntu镜像。
 
 ### 注册并登录
+
 [注册](https://cloud.docker.com)
 
-``` bash
-// 登录
+``` 
+ 登录
 docker login
 ```
 ### 常用命令
+1. 运行容器
+
+`docker run -it [imageName]`
+
+-it  参数作用是以交互模式进入容器，并打开终端。
+
 ```
 docker build -t friendlyname .  # Create image using this directory's Dockerfile
 docker run -p 4000:80 friendlyname  # Run "friendlyname" mapping port 4000 to 80
