@@ -10,6 +10,9 @@ Docker是一个虚拟环境容器，可以将你的开发环境、代码、配�
 
 3.仓库（Repository）：类似于代码仓库，这里是镜像仓库，是Docker用来集中存放镜像文件的地方。注意与注册服务器（Registry）的区别：注册服务器是存放仓库的地方，一般会有多个仓库；而仓库是存放镜像的地方，一般每个仓库存放一类镜像，每个镜像利用tag进行区分，比如Ubuntu仓库存放有多个版本（12.04、14.04等）的Ubuntu镜像。
 
+### 安装
+mac安装[下载地址](https://www.docker.com/docker-mac)
+
 ### 注册并登录
 
 [注册](https://cloud.docker.com)
@@ -24,6 +27,36 @@ docker login
 `docker run -it [imageName]`
 
 -it  参数作用是以交互模式进入容器，并打开终端。
+
+`docker -p 8080:80 -d nginx`
+-p: 端口映射：把nginx的80端口映射到宿主机的8080端口
+-d: 把这个container以守护进程的方式在后台运行
+
+. 拷贝文件到容器中
+`docker cp index.html [containerId]://user/share/nginx/html`
+
+2. 查看本地镜像
+`docker images`
+
+3. 查看容器
+`docker ps`
+查看运行中的容器
+
+`docker ps -a`
+-a:查看所有运行过的容器
+
+4. 停止容器运行
+`docker stop [containerId]`
+
+5. 删除容器
+`docker rm [containerId]`
+
+5. 保存对容器的操作
+`docker commit -m 'msg' [containerId] [imagesRename]`
+创建新的镜像
+
+6. 删除镜像
+`docker rmi [imageId]`
 
 ```
 docker build -t friendlyname .  # Create image using this directory's Dockerfile
@@ -44,3 +77,42 @@ docker push username/repository:tag            # Upload tagged image to registry
 docker run username/repository:tag                   # Run image from a registry
 ```
 
+### Dockerfile创建新镜像
+``` 
+FROM ubuntu
+MAINTAINER gg
+RUN  sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list 
+RUN apt-get update
+RUN apt-get install -y nginx
+COPY index.html /var/www/html
+ENTRYPOINT ["/usr/sbin/nginx","-g","daemon off;"]
+EXPOSE 80
+```
+FROM  base image 从哪开始
+
+RUN 执行命令
+
+ADD 添加文件或目录，可以包括远程文件
+
+COPY 拷贝文件或目录
+
+CMD 执行命令
+
+EXPOSE 暴露端口
+
+WORKDIR 指定运行命令的路径
+
+MAINTAINER 维护者
+
+ENV 设定环境变量
+
+ENTRYPOINT 容器入口
+
+USER 指定用户
+
+VALUME mount point 挂载卷
+
+
+`docker build -t [name] .`
+-t：标签名
+.：路径，当前目录下所有文件进行build
