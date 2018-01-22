@@ -28,9 +28,13 @@ docker login
 
 -it  参数作用是以交互模式进入容器，并打开终端。
 
-`docker -p 8080:80 -d nginx`
+`docker run -p 8080:80 -d nginx`
 -p: 端口映射：把nginx的80端口映射到宿主机的8080端口
 -d: 把这个container以守护进程的方式在后台运行
+
+`docker run -p 8080:80 -d -v $PWD/html:/usr/share/nginx/html nginx`
+-v:挂着卷
+$PWD/html:$PWD是shell的语法，永远指向当前目录，即把当前目录下的html挂载在容器内的nginx下的html目录
 
 . 拷贝文件到容器中
 `docker cp index.html [containerId]://user/share/nginx/html`
@@ -116,3 +120,5 @@ VALUME mount point 挂载卷
 `docker build -t [name] .`
 -t：标签名
 .：路径，当前目录下所有文件进行build
+
+### 多容器管理
