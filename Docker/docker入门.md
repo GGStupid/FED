@@ -22,44 +22,52 @@ mac安装[下载地址](https://www.docker.com/docker-mac)
 docker login
 ```
 ### 常用命令
-1. 运行容器
+
+* 运行容器
 
 `docker run -it [imageName]`
 
 -it  参数作用是以交互模式进入容器，并打开终端。
 
 `docker run -p 8080:80 -d nginx`
+
 -p: 端口映射：把nginx的80端口映射到宿主机的8080端口
+
 -d: 把这个container以守护进程的方式在后台运行
 
 `docker run -p 8080:80 -d -v $PWD/html:/usr/share/nginx/html nginx`
+
 -v:挂着卷
+
 $PWD/html:$PWD是shell的语法，永远指向当前目录，即把当前目录下的html挂载在容器内的nginx下的html目录
 
-. 拷贝文件到容器中
+* 拷贝文件到容器中
+
 `docker cp index.html [containerId]://user/share/nginx/html`
 
-2. 查看本地镜像
+* 查看本地镜像
 `docker images`
 
-3. 查看容器
+* 查看容器
+
 `docker ps`
+
 查看运行中的容器
 
 `docker ps -a`
+
 -a:查看所有运行过的容器
 
-4. 停止容器运行
+* 停止容器运行
 `docker stop [containerId]`
 
-5. 删除容器
+* 删除容器
 `docker rm [containerId]`
 
-5. 保存对容器的操作
+* 保存对容器的操作
 `docker commit -m 'msg' [containerId] [imagesRename]`
-创建新的镜像
 
-6. 删除镜像
+* 删除镜像
 `docker rmi [imageId]`
 
 ```
