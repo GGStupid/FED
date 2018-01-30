@@ -39,3 +39,5 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 而运用不可变性原则之后则要轻松得多。因为我们每次都是返回一个新的对象，所以只要判断这个对象被替换了，那么其中数据肯定是改变了的。
 
+babel-plugin-transform-decorators-legacy
+babel-plugin-syntax-decorators

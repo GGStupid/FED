@@ -13,6 +13,10 @@ Docker是一个虚拟环境容器，可以将你的开发环境、代码、配�
 ### 安装
 mac安装[下载地址](https://www.docker.com/docker-mac)
 
+### docker加速器
+
+[网址](https://www.daocloud.io/mirror#accelerator-doc)
+
 ### 注册并登录
 
 [注册](https://cloud.docker.com)
