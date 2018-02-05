@@ -2,9 +2,9 @@
 
 [vue cli](https://github.com/vuejs/vue-cli)
 [node cli](https://juejin.im/post/5a31d210f265da431a43330e)
-[用node.js开发命令行工具](http://binbinliao.com/programming/commandline-nodejs.html)
 
 
+[commander](https://www.npmjs.com/package/commander)
 [glob](https://www.npmjs.com/package/glob)
 [download-git-repo](https://www.npmjs.com/package/download-git-repo)
 [inquirer](https://www.npmjs.com/package/inquirer)
