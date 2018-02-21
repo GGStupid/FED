@@ -9,7 +9,9 @@
 
 ### BUG 02
 ```
-error: bundling failed: Error: While resolving module `react-native-vector-icons/MaterialIcons`, the Haste package `react-native-vector-icons` was found. However the module `MaterialIcons` could not be found within the package. Indeed, none of these files exist:
+error: bundling failed: Error: While resolving module `react-native-vector-icons/MaterialIcons`, 
+the Haste package `react-native-vector-icons` was found.
+ However the module `MaterialIcons` could not be found within the package. Indeed, none of these files exist:
 ```
 
 解决方式：
