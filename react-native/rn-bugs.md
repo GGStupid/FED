@@ -2,7 +2,7 @@
 
 ### BUG 01 
 如图：
-![imag](http://p4i4zcg0d.bkt.clouddn.com/1519218516034.jpg)
+[](http://p4i4zcg0d.bkt.clouddn.com/1519218516034.jpg){{:width="375px"}}
 
 解决方法：删除ios目录下的build的目录，然后重新`react-native run-ios`
 
