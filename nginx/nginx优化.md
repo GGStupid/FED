@@ -48,6 +48,7 @@ gzip_disable 指令接受一个正则表达式，当请求头中的 UserAgent �
 
 ### 开启缓存
 优化代码逻辑的极限是移除所有逻辑；优化请求的极限是不发送任何请求。这两点通过缓存都可以实现。
+
 #### 客户端
 服务端在输出响应时，可以通过响应头输出一些与缓存有关的信息，从而达到少发或不发请求的目的。HTTP/1.1 的缓存机制稍微有点复杂，这里简单介绍下：
 
@@ -60,3 +61,11 @@ gzip_disable 指令接受一个正则表达式，当请求头中的 UserAgent �
 这里也解释下为什么有了 Expires，还要有 Cache-Control。也有两个原因：1）Cache-Control 功能更强大，对缓存的控制能力更强；2）Cache-Control 采用的 max-age 是相对时间，不受服务端 / 客户端时间不对的影响。
 
 另外关于浏览器的刷新（F5 / cmd + r）和强刷（Ctrl + F5 / shift + cmd +r）：普通刷新会使用协商缓存，忽略强缓存；强刷会忽略浏览器所有缓存（并且请求头会携带 Cache-Control:no-cache 和 Pragma:no-cache，用来通知所有中间节点忽略缓存）。只有从地址栏或收藏夹输入网址、点击链接等情况下，浏览器才会使用强缓存。
+
+### nginx去掉URL中.html后缀
+```
+if (!-e $request_filename){
+    rewrite ^(.*)$ /$1.html last;
+    break;
+}
+```
