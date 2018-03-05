@@ -41,3 +41,101 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 babel-plugin-transform-decorators-legacy
 babel-plugin-syntax-decorators
+
+### react类方法绑定`this`
+绑定很重要，因为类方法不会自动绑定`this`到实例上。
+类方法正确绑定`this`的方式：
+
+1. 在构造函数中绑定（官网方式）：在构造函数中绑定时，绑定只会在组件实例化时运行一次
+```
+class AnyComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.onClickHandle = this.onClickHandle.bind(this)
+  }
+  onClickHandle() {
+    .......
+  }
+  render() {
+    return (
+      <button 
+        onClick={this.onClickHandle}
+        type="button"
+        >
+        Button
+      </button>  
+    )
+  }
+}
+```
+
+2. 用`bind`方式绑定事件：避免这样做，因为它会在每次`render()`方法执行时绑定类方法。总结来说组件每次运行更新时都会导致性能消耗
+```
+class AnyComponent extends Component {
+  onClickHandle() {
+    .......
+  }
+  render() {
+    return (
+      <button 
+        onClick={this.onClickHandle.bind(this)}
+        type="button"
+        >
+        Button
+      </button>  
+    )
+  }
+}
+```
+
+3. 在构造函数中定义业务逻辑类方法：避免这样，因为随着时间的推移它会让你的构造函数变得混乱
+```
+class AnyComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.onClickHandle = () => {
+     ......
+    }
+  }
+  
+  render() {
+    return (
+      <button 
+        onClick={this.onClickHandle}
+        type="button"
+        >
+        Button
+      </button>  
+    )
+  }
+}
+```
+4. 可以利用ES6箭头函数绑定：
+```
+class AnyComponent extends Component {
+  constructor(props) {
+    super(props)
+  }
+  onClickHandle = () => {
+     ......
+  }
+  render() {
+    return (
+      <button 
+        onClick={this.onClickHandle}
+        type="button"
+        >
+        Button
+      </button>  
+    )
+  }
+}
+```
+
+### react事件处理
+当需要传递参数到类的方法中，需要将方法封装在另一个箭头函数中，即`onClick={()=>this.clickHandle(param)}`方式,
+当使用`onClick={doSomething()}`时,`doSomething()`函数会在浏览器打开程序时立即执行，由于监听表达式是函数执行的返回值而不再
+是函数，所以点击按钮时不会有任何事发生。 但当使用`onClick={doSomething}`时，因为`doSomething`是一个函数，所以它会在点击按钮
+时执行。
+同样的规则也适用于在程序中使用的`onDismiss()`类方法。然而，使用`onClick={this.onDismiss}`并不够，因为这个类方法需要接收`param`
+属性来识别那个将要被忽略的项，这就是为什么它需要被封装到另一个函数中来传递这个属性。
