@@ -87,3 +87,13 @@ lsof -i :27017
 ps -ef | grep mongod
 
 ```
+
+### tree命令使用
+```
+// 忽略node_modules目录
+tree -I 'node_modules'
+
+// 显示目录层级,1表示一级目录，2表示二级目录，以此类推
+tree -L 1    
+
+```
