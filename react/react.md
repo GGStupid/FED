@@ -199,3 +199,68 @@ class App extends Component {
 
 另一个生命周期方法:`componentDidCatch(error, info)`。它在 `React 16`中引入，用来捕获组件的错误。举例来说，在你的应用中展示样本数据本来是没问题的。但是可能会有 列表的本地状态被意外设置成 `null`的情况发生(例如从外部 `API`获取列表失败时，你把本 地状态设置为空了)。然后它就不能像之前一样去过滤(filter)和映射(map)这个列表，
 因为它不是一个空列表(`[]`)而是 `null`。这时组件就会崩溃，然后整个应用就会挂掉。现 在你可以用 `componentDidCatch()` 来捕获错误，将它存在本地的状态中，然后像用户展示一条信息，说明应用发生了错误。
+
+### Refs使用
+React v16.3 引入的 React.createRef() API
+
+使用 React.createRef() 创建 refs，通过 ref 属性来获得 React 元素。当构造组件时，refs 通常被赋值给实例的一个属性，这样你可以在组件中任意一处使用它们.
+
+``` javascript
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
+  render() {
+    return <div ref={this.myRef} />;
+  }
+}
+
+```
+在 v16.3以前的版本，ref设置成字符串，在未来版本会被移除，建议使用回调的方式,官网列子如下：
+
+``` javascript
+class CustomTextInput extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.textInput = null;
+
+    this.setTextInputRef = element => {
+      this.textInput = element;
+    };
+
+    this.focusTextInput = () => {
+      // 直接使用原生 API 使 text 输入框获得焦点
+      if (this.textInput) this.textInput.focus();
+    };
+  }
+
+  componentDidMount() {
+    // 渲染后文本框自动获得焦点
+    this.focusTextInput();
+  }
+
+  render() {
+    // 使用 `ref` 的回调将 text 输入框的 DOM 节点存储到 React
+    // 实例上（比如 this.textInput）
+    return (
+      <div>
+        <input
+          type="text"
+          ref={this.setTextInputRef}
+        />
+        <input
+          type="button"
+          value="Focus the text input"
+          onClick={this.focusTextInput}
+        />
+      </div>
+    );
+  }
+}
+```
+
+
+##### 参考
+[React官网](https://doc.react-china.org/docs/refs-and-the-dom.html)
