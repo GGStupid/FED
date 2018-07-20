@@ -1,4 +1,4 @@
-```
+``` javascript
 import axios from 'axios'
 import qs from 'qs'
 import NProgress from 'nprogress'

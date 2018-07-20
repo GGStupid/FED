@@ -1,3 +1,5 @@
+## 仅适用于v16.3以下版本
+
 ### 安装cli
 ```
 npm install -g create-react-app
@@ -8,7 +10,7 @@ create-react-app my-app
 
 改变应用数据的方式一般分为两种。第一种是直接修改已有的变量的值。第二种则是将已有的变量替换为一个新的变量。
 
-```
+``` javascript
 // 直接修改数据
 var player = {score: 1, name: 'Jeff'};
 player.score = 2;
@@ -39,15 +41,12 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 而运用不可变性原则之后则要轻松得多。因为我们每次都是返回一个新的对象，所以只要判断这个对象被替换了，那么其中数据肯定是改变了的。
 
-babel-plugin-transform-decorators-legacy
-babel-plugin-syntax-decorators
-
 ### React类方法绑定`this`
 绑定很重要，因为类方法不会自动绑定`this`到实例上。
 类方法正确绑定`this`的方式：
 
 1. 在构造函数中绑定（官网方式）：在构造函数中绑定时，绑定只会在组件实例化时运行一次
-```
+``` javascript
 class AnyComponent extends Component {
   constructor(props) {
     super(props)
@@ -70,7 +69,7 @@ class AnyComponent extends Component {
 ```
 
 2. 用`bind`方式绑定事件：避免这样做，因为它会在每次`render()`方法执行时绑定类方法。总结来说组件每次运行更新时都会导致性能消耗
-```
+``` javascript
 class AnyComponent extends Component {
   onClickHandle() {
     .......
@@ -89,7 +88,7 @@ class AnyComponent extends Component {
 ```
 
 3. 在构造函数中定义业务逻辑类方法：避免这样，因为随着时间的推移它会让你的构造函数变得混乱
-```
+``` javascript
 class AnyComponent extends Component {
   constructor(props) {
     super(props)
@@ -111,7 +110,7 @@ class AnyComponent extends Component {
 }
 ```
 4. 可以利用ES6箭头函数绑定：
-```
+``` javascript
 class AnyComponent extends Component {
   constructor(props) {
     super(props)
@@ -133,6 +132,7 @@ class AnyComponent extends Component {
 ```
 
 ### React事件处理
+
 当需要传递参数到类的方法中，需要将方法封装在另一个箭头函数中，即`onClick={()=>this.clickHandle(param)}`方式,
 当使用`onClick={doSomething()}`时,`doSomething()`函数会在浏览器打开程序时立即执行，由于监听表达式是函数执行的返回值而不再
 是函数，所以点击按钮时不会有任何事发生。 但当使用`onClick={doSomething}`时，因为`doSomething`是一个函数，所以它会在点击按钮
@@ -141,8 +141,9 @@ class AnyComponent extends Component {
 属性来识别那个将要被忽略的项，这就是为什么它需要被封装到另一个函数中来传递这个属性。
 
 ### React受控组件和非受控组件
+
 表单元素比如`<input>`,`<textarea>` 和 `<select>` 会以原生 `HTML` 的形式保存他 们自己的状态。一旦有人从外部做了一些修改，它们就会修改内部的值，它们自己处理状态,在`React`中这被称为不受控组件。将表单元素的`value`交由`react`组件控制即可，输入框的单项数据流循环是自包含的，组件内部状态是输入框的唯一数据来源，即为受控组件。
-```
+``` javascript
 class App extends Component {
   constructor(props) {
     super(props)
@@ -175,6 +176,7 @@ class App extends Component {
 ```
 
 ### React不同的组件类型
+
 • 函数式无状态组件: 这类组件就是函数，它们接收一个输入并返回一个输出。输入是`props`，输出就是一个普通的`JSX`组件实例。到这里，它和`ES6`类组件非常的相似。然而，函数式无状态组件是函数(函数式的)，并且它们没有本地状态(无状态的)。你不能通过`this.state`或者`this.setState()`来访问或者更新状态，因为这里没有`this`对象。此外，函数式无状态组件是没有生命周期方法的。
 
 • `ES6`类组件:在类的定义中，它们继承自`React`组件。`extend`会注册所有的生命周期方法，只要在`React component API`中， 都可以在你的组件中使用。通过这种方式你可以使用`render()`类方法。此外，通过 使用`this.state`和`this.setState()`，你可以在 ES6 类组件中储存和操控`state`。
@@ -200,10 +202,43 @@ class App extends Component {
 另一个生命周期方法:`componentDidCatch(error, info)`。它在 `React 16`中引入，用来捕获组件的错误。举例来说，在你的应用中展示样本数据本来是没问题的。但是可能会有 列表的本地状态被意外设置成 `null`的情况发生(例如从外部 `API`获取列表失败时，你把本 地状态设置为空了)。然后它就不能像之前一样去过滤(filter)和映射(map)这个列表，
 因为它不是一个空列表(`[]`)而是 `null`。这时组件就会崩溃，然后整个应用就会挂掉。现 在你可以用 `componentDidCatch()` 来捕获错误，将它存在本地的状态中，然后像用户展示一条信息，说明应用发生了错误。
 
-### Refs使用
-React v16.3 引入的 React.createRef() API
+###  React更新方式
 
-使用 React.createRef() 创建 refs，通过 ref 属性来获得 React 元素。当构造组件时，refs 通常被赋值给实例的一个属性，这样你可以在组件中任意一处使用它们.
+在react中，触发`render`的有4条路径,以下假设`shouldComponentUpdate`都是按照默认返回`true`的方式。
+
+1. 首次渲染`Initial Render`
+2. 调用`this.setState` （并不是一次`setState`会触发一次`render`，`React`可能会合并操作，再一次性进行`render`）
+3. 父组件发生更新（一般就是`props`发生改变，但是就算`props`没有改变或者父子组件之间没有数据交换也会触发`render`）
+4. 调用`this.forceUpdate`
+
+### 关于setState异步执行还有一个衍生的问题值得探讨就是它独特存在的
+
+`setState`可能会引发不必要的渲染(renders)
+
+state本身的设计是无法直接更改，`setState`的设计是用来更动state值，
+
+也会触发重新渲染(`re-render`)，按照逻辑就是反正不管如何，只要开发者呼叫`setState`，
+
+React就去作整个视图的重新渲染就是。所以`setState`必定会作重新渲染的执行，只是要如何渲染是由React来决定。
+
+重新渲染(`re-render`)指的主要是页面上视图(View)的重新再呈现，这是React原本的核心设计，
+
+但这个设计是有一些问题的。最主要的是`state`(状态)并不一定单纯只用来记录与视图(View)有关的状态，
+
+也有可能是某个内部控制用的属性值，或是只套用在内部使用的资料。当你改变了这些与视图无关的`state`(状态)值，
+
+以现在的`React`设计来说，照样要触发重新渲染的执行过程，这在某些复杂的应用时，由于造成不必要的渲染，
+
+也有可能造成效能上的问题。
+
+`React`提供了`shouldComponentUpdate`方法让开发者可以自行判断，自行提供对应的解决方式，
+
+算得上是一种补墙的方法
+
+### Refs使用
+`React v16.3 `引入的 `React.createRef()` API
+
+使用 `React.createRef()` 创建 `refs`，通过 `ref` 属性来获得 `React `元素。当构造组件时，`refs` 通常被赋值给实例的一个属性，这样你可以在组件中任意一处使用它们.
 
 ``` javascript
 class MyComponent extends React.Component {
@@ -217,7 +252,7 @@ class MyComponent extends React.Component {
 }
 
 ```
-在 v16.3以前的版本，ref设置成字符串，在未来版本会被移除，建议使用回调的方式,官网列子如下：
+在 `v16.3`以前的版本，ref设置成字符串，在未来版本会被移除，建议使用回调的方式,官网列子如下：
 
 ``` javascript
 class CustomTextInput extends React.Component {
@@ -260,7 +295,9 @@ class CustomTextInput extends React.Component {
   }
 }
 ```
+### react使用装饰器
 
+[mobx使用装饰器@参考](https://cn.mobx.js.org/best/decorators.html)
 
 ##### 参考
 [React官网](https://doc.react-china.org/docs/refs-and-the-dom.html)
